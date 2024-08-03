@@ -18,7 +18,7 @@ function App() {
      <Header cart={cart}/>
       <div className="container">
           <Routes>
-              <Route path='/home' element={<Home  />} />
+              <Route path='/shopping/' element={<Home  />} />
               <Route path='/cart' element={<Viewcart  />} />
           </Routes>
       </div>
