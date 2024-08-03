@@ -1,32 +1,48 @@
 /* eslint-disable react/prop-types */
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Product } from './Product';
-import "./Home.css"
+import "./Home.css";
 
 export const Home = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const [products,setProducts] = useState()
-    async function getAllProduct(){
+  async function getAllProducts() {
+    try {
+      setLoading(true);
+      const response = await fetch('https://dummyjson.com/products');
       
-      const data = await fetch(`https://dummyjson.com/products`);
-      const getAllData = await data.json();
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-      const dataValue = getAllData.products;
-  
-      setProducts(dataValue)
+      const data = await response.json();
+      setProducts(data.products);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-   
-    useEffect(()=>{
-       return ()=>getAllProduct() 
-    },[])
+  }
+
+  useEffect(() => {
+    getAllProducts();
+  }, []); // Only run once when the component mounts
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className='product-container'>
-      {products && products.map((product)=>(
-         <Product key={product.id} product={product}
-          
-         />
+      {products.map((product) => (
+        <Product key={product.id} product={product} />
       ))}
     </div>
-  )
-}
+  );
+};
