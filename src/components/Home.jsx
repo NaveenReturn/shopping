@@ -12,14 +12,14 @@ export const Home = () => {
       const getAllData = await data.json();
 
       const dataValue = getAllData.products;
-      // console.log(dataValue);
+  
       setProducts(dataValue)
     }
    
     useEffect(()=>{
        return ()=>getAllProduct() 
     },[])
-    //  console.log(product)
+
   return (
     <div className='product-container'>
       {products && products.map((product)=>(
